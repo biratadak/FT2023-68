@@ -1,5 +1,8 @@
 
 <?php
+require ("../vendor/autoload.php");
+use GuzzleHttp\Client;
+
 
 class features
 {
@@ -82,44 +85,67 @@ class features
             return FALSE;
     }
 
+    // MailId validation with mailBoxLayer API.
     function validMailBox($mailId)
-    {
-        $curl = curl_init();
-        // Mailbox Layer API calling
-        curl_setopt_array(
-            $curl,
-            array(
-                CURLOPT_URL => "https://api.apilayer.com/email_verification/check?email=" . $mailId,
-                CURLOPT_HTTPHEADER => array(
-                    "Content-Type: text/plain",
-                    "apikey: H2AIxxMvhiT1uUKhxs7TuSMJmysHASNI"
-                ),
-                CURLOPT_RETURNTRANSFER => TRUE,
-                CURLOPT_ENCODING => "",
-                CURLOPT_MAXREDIRS => 10,
-                CURLOPT_TIMEOUT => 0,
-                CURLOPT_FOLLOWLOCATION => TRUE,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                CURLOPT_CUSTOMREQUEST => "GET"
-            )
-        );
+    {   
 
-        $response = curl_exec($curl);
+        // API Calling Using cURL library.
+        // $curl = curl_init();
+        // // Mailbox Layer API calling
+        // curl_setopt_array(
+        //     $curl,
+        //     array(
+        //         CURLOPT_URL => "https://api.apilayer.com/email_verification/check?email=" . $mailId,
+        //         CURLOPT_HTTPHEADER => array(
+        //             "Content-Type: text/plain",
+        //             "apikey: H2AIxxMvhiT1uUKhxs7TuSMJmysHASNI"
+        //         ),
+        //         CURLOPT_RETURNTRANSFER => TRUE,
+        //         CURLOPT_ENCODING => "",
+        //         CURLOPT_MAXREDIRS => 10,
+        //         CURLOPT_TIMEOUT => 0,
+        //         CURLOPT_FOLLOWLOCATION => TRUE,
+        //         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        //         CURLOPT_CUSTOMREQUEST => "GET"
+        //     )
+        // );
+        // $response = curl_exec($curl);
+        // curl_close($curl);
 
-        curl_close($curl);
+        
+        // API Calling using HttpGuzzle.
+        $client= new Client([
+            //base uri of the site
+            'base_uri'=>'https://api.apilayer.com/ ?email=',
+        ]);
+
+        $request= $client->request('GET','email_verification/check',[
+            "headers" => [
+                    // "Content-Type: text/plain",
+                    'apikey'=> 'H2AIxxMvhiT1uUKhxs7TuSMJmysHASNI'
+            ],
+            'query'=>[
+                'email'=> $mailId,
+            ]
+            ]);
+        $response=$request->getBody();
+
+
+
         // Checking format, mx, smtp, and deliverablity score for the mail
         if (json_decode($response)->format_valid == TRUE && json_decode($response)->mx_found == TRUE && json_decode($response)->smtp_check == TRUE) {
             echo "<br>(E-mail deliverablity score is: " . ((json_decode($response)->score) * 100) . "% ).";
             return TRUE;
         } else {
-            echo "<div class='error'>Error:";
-            if (json_decode($response)->format_valid == FALSE) {
+            echo "<div class='error'>Error:<br>";
+
+            if (isset(json_decode($response)->format_valid) && json_decode($response)->format_valid==FALSE) {
                 echo "E-mail format is not valid<br>";
             }
-            if (json_decode($response)->mx_found == FALSE) {
+            if (isset(json_decode($response)->mx_found) && json_decode($response)->mx_found==FALSE) {
                 echo "MX-Records not found<br>";
             }
-            if (json_decode($response)->smtp_check == FALSE) {
+            if (isset(json_decode($response)->smtp_check) && json_decode($response)->smtp_check==FALSE) {
                 echo "SMTP validation failed<br>";
             }
             echo "</div>";
