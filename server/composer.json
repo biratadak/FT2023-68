@@ -3,6 +3,7 @@
         "setasign/fpdf": "^1.8",
         "guzzlehttp/guzzle": "^7.5",
         "phpmailer/phpmailer": "^6.7",
-        "vlucas/phpdotenv": "^5.5"
+        "vlucas/phpdotenv": "^5.5",
+        "kint-php/kint": "^5.0"
     }
 }
