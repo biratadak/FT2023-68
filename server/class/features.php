@@ -1,17 +1,20 @@
-
 <?php
-require ("../vendor/autoload.php");
+require ('../vendor/autoload.php');
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 use GuzzleHttp\Client;
 
+//Getting secret credentials using dotenv
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->safeLoad();
 
 class features
 {
-    public $name,$mailId,$marks,$phoneNo,$imagePath;
-    // Checks if a string only contains alphabets and whitespaces
-
+    public $name, $mailId, $marks, $phoneNo, $imagePath;
+    
     //String methods here 
-
-    // Fucntion to check the string only has alphabets
+    
+    // Checks if a string only contains alphabets and whitespaces
     function onlyAlpha($string)
     {
         if (preg_match("/^[a-zA-Z-' ]*$/", $string)) {
@@ -87,9 +90,10 @@ class features
 
     // MailId validation with mailBoxLayer API.
     function validMailBox($mailId)
-    {   
+    {
 
-        // API Calling Using cURL library.
+    ////// API Calling Using cURL library.//////
+
         // $curl = curl_init();
         // // Mailbox Layer API calling
         // curl_setopt_array(
@@ -112,23 +116,22 @@ class features
         // $response = curl_exec($curl);
         // curl_close($curl);
 
-        
-        // API Calling using HttpGuzzle.
-        $client= new Client([
+
+    // API Calling using HttpGuzzle.
+        $client = new Client([
             //base uri of the site
-            'base_uri'=>'https://api.apilayer.com/ ?email=',
+            'base_uri' => 'https://api.apilayer.com/ ?email=',
         ]);
 
-        $request= $client->request('GET','email_verification/check',[
+        $request = $client->request('GET', 'email_verification/check', [
             "headers" => [
-                    // "Content-Type: text/plain",
-                    'apikey'=> 'H2AIxxMvhiT1uUKhxs7TuSMJmysHASNI'
+                'apikey' => 'H2AIxxMvhiT1uUKhxs7TuSMJmysHASNI'
             ],
-            'query'=>[
-                'email'=> $mailId,
+            'query' => [
+                'email' => $mailId,
             ]
-            ]);
-        $response=$request->getBody();
+        ]);
+        $response = $request->getBody();
 
 
 
@@ -139,17 +142,45 @@ class features
         } else {
             echo "<div class='error'>Error:<br>";
 
-            if (isset(json_decode($response)->format_valid) && json_decode($response)->format_valid==FALSE) {
+            if (isset(json_decode($response)->format_valid) && json_decode($response)->format_valid == FALSE) {
                 echo "E-mail format is not valid<br>";
             }
-            if (isset(json_decode($response)->mx_found) && json_decode($response)->mx_found==FALSE) {
+            if (isset(json_decode($response)->mx_found) && json_decode($response)->mx_found == FALSE) {
                 echo "MX-Records not found<br>";
             }
-            if (isset(json_decode($response)->smtp_check) && json_decode($response)->smtp_check==FALSE) {
+            if (isset(json_decode($response)->smtp_check) && json_decode($response)->smtp_check == FALSE) {
                 echo "SMTP validation failed<br>";
             }
             echo "</div>";
             return false;
+        }
+    }
+
+    //Send Mails using PHP-Mailer
+    function sendMail($mailId,$subject="Subject",$body="no data found"){
+        $mail = new PHPMailer(true);
+
+        try {
+            $mail->SMTPDebug = 0;                                       
+            $mail->isSMTP();                                            
+            $mail->Host       = 'smtp.gmail.com';                    
+            $mail->SMTPAuth   = true;                             
+            $mail->Username   = $_ENV['SMTPMail'];                 
+            $mail->Password   = $_ENV['SMTPKey'];                        
+            $mail->SMTPSecure = 'tls';                              
+            $mail->Port       = 587;  
+          
+            $mail->setFrom($mailId, 'PHP Advance Assignment 2');           
+            $mail->addAddress($mailId);
+               
+            $mail->isHTML(true);                                  
+            $mail->Subject = $subject;
+            $mail->Body    = $body;
+            $mail->AltBody = 'Body in plain text for non-HTML mail clients';
+            $mail->send();
+            echo "Mail has been sent successfully!";
+        } catch (Exception $e) {
+            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
         }
     }
 
