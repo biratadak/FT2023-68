@@ -31,11 +31,12 @@
 
 /* index page styling */
 .login-form{
-  border: 2px dotted black;
+  /* border: 2px dotted black; */
   border-radius: 10px;
   padding: 20px 30px;
   box-shadow: 0 0 20px 1px rgba(255, 255, 255, 0.793);
-  background: linear-gradient(30deg,rgba(0, 0, 0, 0.677),rgba(0, 0, 0, 0.187));
+  /* background: linear-gradient(30deg,rgba(0, 0, 0, 0.677),rgba(0, 0, 0, 0.187)); */
+  backdrop-filter: blur(5px);
 }
 .login-form>input{
   background-color: rgba(245, 245, 245, 0.692);
@@ -46,8 +47,8 @@
 /* submit page */
 body {
   height: 100vh;
-  background: linear-gradient(180deg,rgba(60, 1, 211, 0.8),rgba(137, 1, 183, 0.8)), url("https://source.unsplash.com/random/1400x810/?computer,softwear");
-  background-size: cover;
+  /* background: url("https://source.unsplash.com/random/1400x810/?computer,softwear"); */
+  background: linear-gradient(180deg,rgba(0, 0, 0, 0.79),rgba(0, 0, 0, 0.19)), url("https://source.unsplash.com/random/1400x810/?login,4K");  background-size: cover;
   background-position: center;
   /* background-color: #bfff9380; */
   color: whitesmoke;
@@ -55,7 +56,7 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  font-family:fantasy;
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 
 }
 .welcome-txt{

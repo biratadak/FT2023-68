@@ -1,7 +1,7 @@
 <!-- SERVER SIDE CODE -->
 <?php session_start(); ?>
 <html>
-
+ 
 <head>
   <title>Assgnment 6</title>
   <link rel="stylesheet" href="../stylesheet/style.css">
