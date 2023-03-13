@@ -1,7 +1,7 @@
 <!-- SERVER SIDE CODE -->
 <?php session_start(); ?>
 <html>
- 
+
 <head>
   <title>Assgnment 6</title>
   <link rel="stylesheet" href="../stylesheet/style.css">
@@ -52,8 +52,9 @@ if (!empty($_FILES['pic']['name'])) {
   move_uploaded_file($file_temp, "../uploaded_Images/" . $file_name);
 }
 // If image field is empty then show the default image
-else
+else {
   $file_name = "default.jpeg";
+}
 ?>
 
 <body>
@@ -61,8 +62,11 @@ else
   <div class="details">
     <!-- ID field only holds Profile-pic and fullname -->
     <div class="ID">
+
       <?php
+      // If picture is not empty
       if (!empty($_FILES['pic']['name']) && $fNameErr === "" && $lNameErr === "") {
+        // If picture is valid
         if ($feature->validImage($file_size, $file_type)) {
           echo '<div class="profile-pic">';
           echo '<img src="../uploaded_Images/' . $file_name . '">';
@@ -87,7 +91,9 @@ else
         if ($fNameErr === "" && $lNameErr === "") {
           echo "<br>Welcome &nbsp" . $user->getFName() .
             "<h5> FORM SUCCESSFULLY SUBMITTED </h4><br>";
-        } else {
+        } 
+        // If founds error firstName or lastName
+        else {
           echo "error:";
           echo $fNameErr;
           echo $lNameErr;
@@ -157,9 +163,9 @@ else
   <!-- Email  validation -->
 
   <!-- Only format check using RegEx -->
-  <?php 
+  <?php
   $user->setMailId($_POST['mailId']);
-  if ($feature->validMailId1($user->getMailId()))
+  if ($feature->validMailId($user->getMailId()))
     echo "<br>Mail Id is: " . $user->getMailId();
   else
     echo "<br><div class='error'><br>Invalid E-Mail Id</div>";
@@ -177,9 +183,7 @@ else
       $_SESSION['phoneNo'] = $user->getPhoneNo();
       $_SESSION['imagePath'] = $file_name;
       $_SESSION['marks'] = $feature->splitMarks($user->getMarks());
-      // echo '<a class="pdf-btn" href="http://php.nginx/class/newPage.php">DOWNLOAD PDF</a>';
       echo '<a class="pdf-btn" href="http://php.nginx/class/generatePDF.php" target="_blank">DOWNLOAD PDF</a>';
-
     }
   }
   ?>

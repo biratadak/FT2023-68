@@ -162,9 +162,9 @@ class features
      *  Stores the Mail Id of the user. 
      * 
      **/
-    function validMailId1($mailId)
+    function validMailId($mailId)
     {
-        if (preg_match("/^[a-z-.]{1,20}[@][a-z]{1,10}[.][c][o][m]$/", $mailId))
+        if (preg_match("/^[a-z-.]{1,20}[@][a-z]{1,10}[.][a-z]{2,4}$/", $mailId))
             return TRUE;
         else
             return FALSE;
@@ -179,31 +179,6 @@ class features
      **/
     function validMailBox($mailId)
     {
-
-        ////// API Calling Using cURL library.//////
-
-        // $curl = curl_init();
-        // // Mailbox Layer API calling
-        // curl_setopt_array(
-        //     $curl,
-        //     array(
-        //         CURLOPT_URL => "https://api.apilayer.com/email_verification/check?email=" . $mailId,
-        //         CURLOPT_HTTPHEADER => array(
-        //             "Content-Type: text/plain",
-        //             "apikey: H2AIxxMvhiT1uUKhxs7TuSMJmysHASNI"
-        //         ),
-        //         CURLOPT_RETURNTRANSFER => TRUE,
-        //         CURLOPT_ENCODING => "",
-        //         CURLOPT_MAXREDIRS => 10,
-        //         CURLOPT_TIMEOUT => 0,
-        //         CURLOPT_FOLLOWLOCATION => TRUE,
-        //         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        //         CURLOPT_CUSTOMREQUEST => "GET"
-        //     )
-        // );
-        // $response = curl_exec($curl);
-        // curl_close($curl);
-
 
         // API Calling using HttpGuzzle.
         $client = new Client([
