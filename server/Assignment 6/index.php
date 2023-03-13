@@ -1,9 +1,11 @@
+
 <!-- CLIENT SIDE CODE -->
 <html>
   <head>
     <meta charset="UTF-8" />
     <title>Assgnment 6</title>
     <link rel="stylesheet" href="../stylesheet/style.css" />
+    <script src="../class/validation.js"></script>
   </head>
 
   <body>
@@ -12,7 +14,7 @@
         method="post"
         action="http://php.nginx/Assignment 6/submit.php"
         enctype="multipart/form-data"
-        onsubmit="return validation()"
+        onsubmit="return validate()"
       >
         <div class="top">
           <!-- First Name section -->
@@ -82,84 +84,30 @@
       </form>
     </div>
 
-    <script>
-      // Function to check only alphabet and spaces in given name field.
-      function allLetter(fieldName, errorFieldName) {
-        document.getElementsByName(fieldName)[0].onkeyup = function () {
-          inputtxt = document.getElementsByName(fieldName)[0].value;
-          var pattern = /^[A-Za-z-' ]+$/;
-          if (inputtxt.match(pattern)) {
-            document.getElementsByName(errorFieldName)[0].innerHTML = "";
-          } else {
-            document.getElementsByName(errorFieldName)[0].innerHTML =
-            "Only letters and white space allowed";
-
-          }
-        };
-      }
-      // Function to check valid Indian phone no.
-      function validPhone(fieldName, errorFieldName) {
-        document.getElementsByName(fieldName)[0].onkeyup = function () {
-          inputtxt = document.getElementsByName(fieldName)[0].value;
-          var pattern = /^[+][9][1][6-9][0-9]{9}$/;
-          if (inputtxt.match(pattern)) {
-            document.getElementsByName(errorFieldName)[0].innerHTML = "";
-          } else {
-            if(inputtxt.slice(0,3)!="+91")
-            document.getElementsByName(errorFieldName)[0].innerHTML =
-            "Add +91 beggining";
-            else
-            document.getElementsByName(errorFieldName)[0].innerHTML =
-            "Invalid Number";
-
-          }
-        };
-      }
-      // Function to check valid mail id.
-      function validMail(fieldName, errorFieldName) {
-        document.getElementsByName(fieldName)[0].onkeyup = function () {
-          inputtxt = document.getElementsByName(fieldName)[0].value;
-          var pattern = /^[a-z-.]{1,20}[@][a-z]{1,10}[.][c][o][m]$/;
-          if (inputtxt.match(pattern)) {
-            document.getElementsByName(errorFieldName)[0].innerHTML = "";
-          } else {
-            document.getElementsByName(errorFieldName)[0].innerHTML =
-            "Invalid Mail Id";
-
-          }
-        };
-      }
-      // Function to live update the display field with data from given name field.
-      function liveUpdate(fieldName) {
-        document.getElementsByName(fieldName)[0].onkeyup = function () {
-          document.querySelector("#display").value = document
-            .getElementsByName("fname")[0]
-            .value.toUpperCase()
-            .concat(
-              " ",
-              document.getElementsByName("lname")[0].value.toUpperCase()
-            );
-        };
-      }
-      
-      // To live update the fields.
-      liveUpdate("fname");
-      liveUpdate("lname");
-      // To check the fields only contains alphabets.
-      allLetter("fname", "ferr");
-      allLetter("lname", "lerr");
-      // To check the phone number is valid.
-      validPhone("phoneNo", "perr");
-      // To check the mail id is valid.
-      validMail("mailId", "merr");
-      
+    <script>    
       // Check validation
-      function validation(){
+      function validate(){
         if((document.getElementsByName("ferr")[0].innerHTML == "") && (document.getElementsByName("lerr")[0].innerHTML == "") && (document.getElementsByName("perr")[0].innerHTML == "") && (document.getElementsByName("merr")[0].innerHTML == "") )
         return true;
         else 
         return false;
       }
+      
+      // To check the phone number is valid.
+      validPhone("phoneNo", "perr");
+      
+      // To check the fields only contains alphabets.
+      allLetter("fname", "ferr");
+      allLetter("lname", "lerr");
+      
+      // To check the mail id is valid.
+      validMail("mailId", "merr");
+
+      // To live update the fields.
+      liveUpdate("fname");
+      liveUpdate("lname");
+      
+
     </script>
   </body>
 </html>

@@ -162,17 +162,8 @@ else
   if ($feature->validMailId1($user->getMailId()))
     echo "<br>Mail Id is: " . $user->getMailId();
   else
-    echo "<div class='error'><br>Invalid E-Mail Id</div>";
+    echo "<br><div class='error'><br>Invalid E-Mail Id</div>";
   ?>
-
-  <!-- Checking format, mx-server, smtp, and deliverablity score for the mail -->
-  <!-- <?php
-  $user->setMailId($_POST['mailId']);
-  if ($feature->validMailId1($user->getMailId()))
-    echo "<br>Mail Id is: " . $user->getMailId();
-  else
-    echo "<div class='error'><br>Invalid E-Mail Id</div>";
-  ?> -->
 
   <!-- PDF Download section -->
   <?php
